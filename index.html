@@ -3,19 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <title>Kick and Cop</title>
   </head>
   <body>
-    <header>
-
+    <header class="header">
+      <a href="index.html"
+        ><h1 class="logo">KICK <span>&</span> COP</h1></a
+      >
+      <nav class="nav-icons">
+        <ul class="ul-icon">
+          <li class="icon-coeur">
+            <div class="dropdown">
+              <img src="/assets/img/coeur.png" alt="Coeur" id="dropbtn" />
+              <div class="dropdown-content">
+                <h2 class="title-open-coeur">Coup de Coeur</h2>
+                <p>Vous n'avez encore rien aimé...</p>
+              </div>
+            </div>
+          </li>
+          <li id="icon-panier">
+            <div class="dropdown">
+              <img
+                src="/assets/img/icons8-panier-96.png"
+                alt="Panier"
+                id="dropbtn"
+              />
+              <div class="dropdown-content">
+                <h2 class="title-open-panier">Panier</h2>
+                <p>Votre Panier est vide...</p>
+              </div>
+            </div>
+          </li>
+          <li class="icon-user">
+            <div class="dropdown">
+              <img
+                src="/assets/img/utilisateur.png"
+                alt="User"
+                id="dropbtn"
+              />
+              <div class="dropdown-content">
+                <h2 class="title-open-user">Compte</h2>
+                <p>Nom du Compte</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </nav>
     </header>
     <main>
-
+      <div id="rares">
+        <h2>Sneakers Rares</h2>
+        <div class="products-container"></div>
+      </div>
+      
+      <div id="tendances">
+        <h2>Sneakers Tendances</h2>
+        <div class="products-container"></div>
+      </div>
     </main>
     <footer>
-      
+      <!-- Pied de page -->
     </footer>
-    <script src="assets/js/script.js"></script>
+    <script src="./js/script.js" type="module"></script>
   </body>
 </html>
