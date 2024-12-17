@@ -19,8 +19,14 @@ stripe.products.create({
     }).then(price => {
         console.log('Success! Here is your starter subscription product id: ' + product.id);
         console.log('Success! Here is your starter subscription price id: ' + price.id);
+        console.log('Price: $' + (price.unit_amount / 100) + ' per ' + price.recurring.interval);
+    }).catch(err => {
+        console.error('Error creating price:', err);
     });
+}).catch(err => {
+    console.error('Error creating product:', err);
 });
+
 // fin clem 
 
 // debut jules 
