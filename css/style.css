@@ -100,16 +100,71 @@
   margin: 0 10px;
   font-size: 0.9em;
 }
-
-.panier-item button {
-  background: none;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
+.dropdown-content #remove-item{
+  color: white;
+  background-color: #3a393b;
+  margin-left: 2px;
 }
 
-.panier-item button:hover {
-  text-decoration: underline;
+#decouvrir {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #FFFFFF, #C8C374);
+  margin-bottom: 5%;
+}
+
+#decouvrir img {
+  transform: scaleX(-1);
+  margin-left: 30px;
+  margin-top: 80px;
+}
+
+#edition_limitee {
+  display: flex;
+  margin-right: 20%;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(white, black);
+  width: 250px;
+  height: 150px;
+  border-radius: 5%;
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#edition_limitee button {
+  background-color: black;
+  color: #C8C374;
+  cursor: pointer;
+  width: 150px;
+  height: 300px;
+  border-radius: 5px;
+  font-size: large;
+  text-transform: uppercase;
+  font-family: monospace;
+}
+
+#edition_limitee button:hover {
+  background-color: rgb(52, 51, 49);
+}
+
+#decouvrir h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-family: inherit;
+}
+
+#decouvrir h3 {
+  color: #c5b67d;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-family: inherit;
 }
 
 /* Main */
@@ -120,13 +175,98 @@
   gap: 20px;
 }
 
+.product-card img {
+  max-width: 100%;
+  max-height: 20vh;
+  border-radius: 8px;
+  margin-bottom: 8%;
+}
+
+.product-card h3 {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.product-card p {
+  color: #555;
+}
+
+h2 {
+  text-align: center;
+}
+
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Uniformiser les dimensions des cartes */
 .product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
-  width: 300px;
+  width: 300px; /* Largeur fixe pour toutes les cartes */
+  height: 500px; /* Hauteur fixe pour uniformiser */
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  background-color: #fff; /* Contexte blanc */
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Images uniformes */
+.product-card img {
+  max-width: 90%;
+  max-height: 150px; /* Hauteur max pour les images */
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Titres uniformes */
+.product-card h3 {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #333;
+}
+
+/* Description et prix */
+.product-card p {
+  color: #555;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+/* Boutons d'action */
+.product-card .add-to-panier {
+  background-color: #3a393b;
+  border: 2px solid #c8c374;
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-card .add-to-panier:hover {
+  background-color: #c8c374;
+  color: #3a393b;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
 }
 
 .product-card img {
@@ -143,23 +283,30 @@
   color: #555;
 }
 
-.product-card button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.product-card button:hover {
-  background-color: #0056b3;
-}
-
-
-#rares h2,
-#tendances h2{
+/* Boutons d'action */
+.product-card .actions {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 
+button.add-to-panier {
+  background-color: #3a393b;
+  border-radius: 10px;
+  border: 4px double #cccccc;
+  color: #eeeeee;
+  text-align: center;
+  font-size: 15px;
+  padding: 10px;
+  width: 100px;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+button.add-to-panier:hover {
+  background-color: #3d3d3d;
+}

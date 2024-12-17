@@ -23,7 +23,7 @@ function updatePanier() {
         <span>${product.productName}</span>
         <span>${product.price.toFixed(2)} €</span>
         <select class="quantity-select" data-name="${product.productName}">
-          ${Array.from({ length: 10 }, (_, i) => i + 1) // Création de 10 options (1 à 10)
+          ${Array.from({ length: 10 }, (_, i) => i + 1)
             .map(
               (value) =>
                 `<option value="${value}" ${
@@ -32,7 +32,7 @@ function updatePanier() {
             )
             .join("")}
         </select>
-        <button class="remove-item" data-name="${product.productName}">🗑️</button>
+        <button class="remove-item" data-name="${product.productName}">Supprimer</button>
       </div>
     `
     )
@@ -41,16 +41,17 @@ function updatePanier() {
   // Calcul du total
   const total = panier.reduce((sum, product) => sum + product.price * product.quantity, 0);
 
-  // Afficher les produits et le total
+  // Ajouter le contenu et le bouton de validation
   panierContent.innerHTML = `
     <h2 class="title-open-panier">Panier</h2>
     ${panierHTML}
     <div class="panier-total">
       <strong>Total :</strong> ${total.toFixed(2)} €
     </div>
+    <button id="validate-purchase">Valider le panier</button>
   `;
 
-  // Gérer les changements de quantité
+  // Gestion des événements pour les quantités et suppression
   document.querySelectorAll(".quantity-select").forEach((select) => {
     select.addEventListener("change", (e) => {
       const productName = e.target.getAttribute("data-name");
@@ -59,12 +60,18 @@ function updatePanier() {
     });
   });
 
-  // Gérer les boutons de suppression
   document.querySelectorAll(".remove-item").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const productName = e.target.getAttribute("data-name");
       removeFromPanier(productName);
     });
+  });
+
+  // Gestion du bouton "Valider les achats"
+  document.querySelector("#validate-purchase").addEventListener("click", () => {
+    alert("Vos achats ont été validés !");
+    panier = []; // Vider le panier après validation
+    updatePanier(); // Mettre à jour l'affichage
   });
 }
 
