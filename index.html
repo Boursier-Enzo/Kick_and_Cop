@@ -1,21 +1,80 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
-    <title>Kick and Cop</title>
-  </head>
-  <body>
-    <header>
 
-    </header>
-    <main>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <title>Kick and Cop</title>
+</head>
 
-    </main>
-    <footer>
-      
-    </footer>
-    <script src="assets/js/script.js"></script>
-  </body>
+<body>
+  <header class="header">
+    <a href="index.html"></a>
+      <h1 class="logo">KICK <span>&</span> COP</h1>
+    </a>
+    <nav class="nav-icons">
+      <ul class="ul-icon">
+        <li class="icon-coeur">
+          <div class="dropdown">
+            <img src="/assets/img/coeur.png" alt="Coeur" id="dropbtn" />
+            <div class="dropdown-content">
+              <h2 class="title-open-coeur">Coup de Coeur</h2>
+              <p>Vous n'avez encore rien aimÃ©...</p>
+            </div>
+          </div>
+        </li>
+        <li id="icon-panier">
+          <div class="dropdown">
+            <img src="/assets/img/icons8-panier-96.png" alt="Panier" id="dropbtn" />
+            <div class="dropdown-content">
+              <h2 class="title-open-panier">Panier</h2>
+              <p>Votre Panier est vide...</p>
+            </div>
+          </div>
+        </li>
+        <li class="icon-user">
+          <div class="dropdown">
+            <img src="/assets/img/utilisateur.png" alt="User" id="dropbtn" />
+            <div class="dropdown-content">
+              <h2 class="title-open-user">Compte</h2>
+              <p>Nom du Compte</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div id="rares">
+      <h2>Sneakers Rares</h2>
+      <div class="products-container"></div>
+    </div>
+
+    <div id="tendances">
+      <h2>Sneakers Tendances</h2>
+      <div class="products-container"></div>
+    </div>
+    <div class="css-1vn3hwp">
+      <div tabindex="-1" class="chakra-slider css-u2w8gz"
+        style="position: relative; touch-action: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); user-select: none; outline: 0px;">
+        <div id="slider-track-three-sixty-slider-track" class="chakra-slider__track css-uxnxu9"
+          style="position: absolute; top: 50%; transform: translateY(-50%); width: 100%;">
+          <div class="chakra-slider__filled-track css-5rutzh"
+            style="position: absolute; top: 50%; transform: translateY(-50%); width: 77.1429%; left: 0%;"></div>
+        </div>
+        <div role="slider" tabindex="0" id="slider-thumb-three-sixty-slider-track" aria-valuemin="0" aria-valuemax="35"
+          aria-valuenow="27" aria-orientation="horizontal" aria-label="360 Slider Track"
+          class="chakra-slider__thumb css-6bmoar"
+          style="position: absolute; user-select: none; touch-action: none; left: 77.1429%;"></div><input type="hidden"
+          value="27">
+      </div>
+    </div>
+  </main>
+  <footer>
+
+  </footer>
+  <script src="assets/js/script.js"></script>
+</body>
+
 </html>
