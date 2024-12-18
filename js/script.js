@@ -1,8 +1,95 @@
 import products from "./myProducts.js";
 
-let panier = []; // Tableau pour stocker les produits ajoutés au panier
+let favorites = []; // Coup de cœur
+let panier = []; // Panier
+let user = null; // Compte utilisateur
 
-// Fonction pour mettre à jour l'affichage du panier
+// === Coup de Cœur ===
+function updateFavorites() {
+  const favoritesContainer = document.querySelector(".icon-coeur .dropdown-content");
+
+  if (favorites.length === 0) {
+    favoritesContainer.innerHTML = `
+      <h2 class="title-open-coeur">Ma Liste</h2>
+      <p>Vous n'avez encore rien aimé...</p>
+    `;
+    return;
+  }
+
+  const favoritesHTML = favorites
+    .map(
+      (product) => `
+      <div class="favorite-item">
+        <img src="${product.imageUrl}" alt="${product.productName}" width="50">
+        <button class="remove-favorite" data-name="${product.productName}">Retirer</button>
+      </div>
+    `
+    )
+    .join("");
+
+  favoritesContainer.innerHTML = `
+    <h2 class="title-open-coeur">Ma Liste</h2>
+    ${favoritesHTML}
+  `;
+
+  // Gestion des boutons pour retirer un favori
+  favoritesContainer.querySelectorAll(".remove-favorite").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      const productName = e.target.getAttribute("data-name");
+      removeFromFavorites(productName);
+    });
+  });
+}
+
+function addToFavorites(product) {
+  const alreadyFavorite = favorites.find((item) => item.productName === product.productName);
+  if (!alreadyFavorite) {
+    favorites.push(product);
+    updateFavorites();
+    alert(`${product.productName} a été ajouté à vos coups de cœur !`);
+  } else {
+    alert(`${product.productName} est déjà dans vos coups de cœur.`);
+  }
+}
+
+function removeFromFavorites(productName) {
+  favorites = favorites.filter((item) => item.productName !== productName);
+  updateFavorites();
+}
+
+// === Mon Compte ===
+function updateAccount() {
+  const userInfo = document.querySelector(".icon-user .dropdown-content");
+  if (user) {
+    userInfo.innerHTML = `
+      <h2 class="title-open-user">Compte</h2>
+      <p>Connecté en tant que : ${user.name}</p>
+      <button id="logout-btn">Se déconnecter</button>
+    `;
+    document.getElementById("logout-btn").addEventListener("click", logout);
+  } else {
+    userInfo.innerHTML = `
+      <h2 class="title-open-user">Compte</h2>
+      <p>Vous n'êtes pas connecté.</p>
+      <button id="login-btn">Se connecter</button>
+    `;
+    document.getElementById("login-btn").addEventListener("click", login);
+  }
+}
+
+function login() {
+  user = { name: "Enzo", email: "enzo@example.com" };
+  updateAccount();
+  alert("Connexion réussie !");
+}
+
+function logout() {
+  user = null;
+  updateAccount();
+  alert("Déconnexion réussie !");
+}
+
+// === Panier ===
 function updatePanier() {
   const panierContent = document.querySelector("#icon-panier .dropdown-content");
 
@@ -14,130 +101,187 @@ function updatePanier() {
     return;
   }
 
-  // Construire le contenu du panier
   const panierHTML = panier
     .map(
       (product) => `
       <div class="panier-item">
         <img src="${product.imageUrl}" alt="${product.productName}" width="40">
-        <span>${product.productName}</span>
-        <span>${product.price.toFixed(2)} €</span>
-        <select class="quantity-select" data-name="${product.productName}">
-          ${Array.from({ length: 10 }, (_, i) => i + 1)
-            .map(
-              (value) =>
-                `<option value="${value}" ${
-                  product.quantity === value ? "selected" : ""
-                }>${value}</option>`
-            )
-            .join("")}
-        </select>
+        <span>${product.price.toFixed(2)}€</span>
         <button class="remove-item" data-name="${product.productName}">Supprimer</button>
       </div>
     `
     )
     .join("");
 
-  // Calcul du total
-  const total = panier.reduce((sum, product) => sum + product.price * product.quantity, 0);
+  const total = panier.reduce((sum, product) => sum + product.price, 0);
 
-  // Ajouter le contenu et le bouton de validation
   panierContent.innerHTML = `
     <h2 class="title-open-panier">Panier</h2>
     ${panierHTML}
     <div class="panier-total">
       <strong>Total :</strong> ${total.toFixed(2)} €
+      <button id="validate-purchase">Valider le panier</button>
     </div>
-    <button id="validate-purchase">Valider le panier</button>
   `;
 
-  // Gestion des événements pour les quantités et suppression
-  document.querySelectorAll(".quantity-select").forEach((select) => {
-    select.addEventListener("change", (e) => {
-      const productName = e.target.getAttribute("data-name");
-      const newQuantity = parseInt(e.target.value, 10);
-      updateQuantity(productName, newQuantity);
-    });
-  });
-
-  document.querySelectorAll(".remove-item").forEach((btn) => {
+  // Gestion des événements
+  panierContent.querySelectorAll(".remove-item").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const productName = e.target.getAttribute("data-name");
       removeFromPanier(productName);
     });
   });
 
-  // Gestion du bouton "Valider les achats"
-  document.querySelector("#validate-purchase").addEventListener("click", () => {
+  panierContent.querySelector("#validate-purchase").addEventListener("click", () => {
     alert("Vos achats ont été validés !");
-    panier = []; // Vider le panier après validation
-    updatePanier(); // Mettre à jour l'affichage
+    panier = [];
+    updatePanier();
   });
 }
 
-// Fonction pour ajouter un produit au panier
 function addToPanier(product) {
-  const existingProduct = panier.find((item) => item.productName === product.productName);
-
-  if (existingProduct) {
-    existingProduct.quantity++; // Augmente la quantité si le produit existe déjà
-  } else {
-    panier.push({ ...product, quantity: 1 }); // Ajoute le produit avec une quantité initiale de 1
-  }
-
-  updatePanier(); // Met à jour l'affichage du panier
+  panier.push(product);
+  updatePanier();
   alert(`${product.productName} a été ajouté au panier !`);
 }
 
-// Fonction pour supprimer un produit du panier
 function removeFromPanier(productName) {
-  panier = panier.filter((item) => item.productName !== productName); // Filtre les produits
-  updatePanier(); // Met à jour l'affichage du panier
+  panier = panier.filter((item) => item.productName !== productName);
+  updatePanier();
 }
 
-// Fonction pour mettre à jour la quantité d'un produit
-function updateQuantity(productName, newQuantity) {
-  const product = panier.find((item) => item.productName === productName);
-  if (product) {
-    product.quantity = newQuantity;
-    updatePanier(); // Met à jour l'affichage du panier
-  }
-}
-
-// Fonction pour afficher les produits dans les sections (Rares et Tendances)
+// === Affichage des produits ===
 function displayProducts() {
-  const categories = ["rares", "tendances"]; // Les catégories définies
-
+  const categories = ["rares", "tendances"];
   categories.forEach((category) => {
     const section = document.querySelector(`#${category} .products-container`);
-
     const filteredProducts = products.filter((product) => product.category === category);
 
     filteredProducts.forEach((product) => {
       const productCard = document.createElement("div");
       productCard.classList.add("product-card");
-
       productCard.innerHTML = `
         <img src="${product.imageUrl}" alt="${product.productName}">
         <h3>${product.productName}</h3>
         <p>${product.description}</p>
-        <p>Prix : ${product.price.toFixed(2)} €</p>
-        <button class="add-to-panier">Choisir</button>
+        <p>${product.price.toFixed(2)} €</p>
+        <button class="add-to-panier">Ajouter au Panier</button>
+        <button class="add-to-favorites">Ajouter à ma liste</button>
       `;
 
-      // Ajouter un événement au bouton "Choisir"
       productCard.querySelector(".add-to-panier").addEventListener("click", () => {
         addToPanier(product);
       });
 
-      // Ajouter la carte produit à la section correspondante
+      productCard.querySelector(".add-to-favorites").addEventListener("click", () => {
+        addToFavorites(product);
+      });
+
       section.appendChild(productCard);
     });
   });
 }
 
-// Initialisation au chargement du DOM
+// === Initialisation ===
 document.addEventListener("DOMContentLoaded", () => {
-  displayProducts(); // Affiche les produits sur la page
-  updatePanier(); // Initialise l'affichage du panier
+  displayProducts();
+  updatePanier();
+  updateAccount();
+  updateFavorites();
+});
+
+// Boutons
+const enClickAnglais = document.getElementById('anglais');
+const enClickEspagnols = document.getElementById('espagnols');
+const enClickItalien = document.getElementById('italien');
+const enClickFrancais = document.getElementById('francais');
+const enClickAllemand = document.getElementById('allemand');
+const enClickArabe = document.getElementById('arabe');
+const enClickChinois = document.getElementById('chinois');
+
+// traduction
+const mentions = document.getElementById('mention');
+const sociaux = document.getElementById('sociaux');
+const transport = document.getElementById('trans');
+const moyens = document.getElementById('moyens');
+const cop = document.getElementById('cop');
+const kick = document.getElementById('kick');
+const mail = document.getElementById('mail');
+const nous = document.getElementById('nous');
+
+enClickAnglais.addEventListener('click', function () {
+    mentions.textContent = "LEGAL NOTICES | PRIVACY POLICY | CGU | General Terms and Conditions";
+    sociaux.textContent = "OUR SOCIAL NETWORKS";
+    transport.textContent = "CARRIERS";
+    moyens.textContent = "OUR PAYMENT MEANS";
+    cop.textContent = "KICK & COP is your go-to destination for stylish shoes, comfortable and suitable for all occasions. We carefully select quality models that combine style and durability.";
+    kick.textContent = "ABOUT KICK & COP";
+    mail.textContent = "E-MAIL ADDRESS:";
+    nous.textContent = "CONTACT US:";
+});
+
+enClickEspagnols.addEventListener('click', function () {
+    mentions.textContent = "AVISO LEGAL | POLÍTICA DE PRIVACIDAD | UGE | Términos y condiciones generales";
+    sociaux.textContent = "NUESTRAS REDES SOCIALES";
+    transport.textContent = "TRANSPORTADORES";
+    moyens.textContent = "NUESTROS MEDIOS DE PAGO";
+    cop.textContent = "KICK & COP es tu destino ideal para encontrar zapatos elegantes, cómodos y adecuados para todas las ocasiones. Seleccionamos cuidadosamente modelos de calidad que combinan estilo y durabilidad.";
+    kick.textContent = "ACERCA DE KICK & COP";
+    mail.textContent = "DIRECCIÓN DE CORREO ELECTRÓNICO:";
+    nous.textContent = "CONTÁCTENOS:";
+});
+
+enClickItalien.addEventListener('click', function () {
+    mentions.textContent = "NOTE LEGALI | INFORMATIVA SULLA PRIVACY | CGU | Termini e Condizioni Generali";
+    sociaux.textContent = "I NOSTRI SOCIAL NETWORK";
+    transport.textContent = "VETTORI";
+    moyens.textContent = "I NOSTRI MEZZI DI PAGAMENTO";
+    cop.textContent = "KICK & COP è la tua destinazione preferita per scarpe eleganti, comode e adatte a tutte le occasioni. Selezioniamo con cura modelli di qualità che uniscono stile e durata.";
+    kick.textContent = "INFORMAZIONI SU KICK & COP";
+    mail.textContent = "INDIRIZZO E-MAIL:";
+    nous.textContent = "CONTATTACI:";
+});
+
+enClickFrancais.addEventListener('click', function () {
+    mentions.textContent = "MENTIONS LÉGALES | POLITIQUE DE CONFIDENTIALITÉ | CGU | CGV";
+    sociaux.textContent = "NOS RÉSEAUX SOCIAUX";
+    transport.textContent = "TRANSPORTEURS";
+    moyens.textContent = "NOS MOYENS DE PAIEMENT";
+    cop.textContent = "KICK & COP est votre destination incontournable pour trouver des chaussures élégantes, confortables et adaptées à toutes les occasions. Nous sélectionnons avec soin des modèles de qualité qui allient style et durabilité.";
+    kick.textContent = "À PROPOS DE KICK & COP";
+    mail.textContent = "ADRESSE E-MAIL:";
+    nous.textContent = "NOUS CONTACTER:";
+});
+
+enClickAllemand.addEventListener('click', function () {
+    mentions.textContent = "IMPRESSUM | DATENSCHUTZRICHTLINIE | CGU | Allgemeine Geschäftsbedingungen";
+    sociaux.textContent = "UNSERE SOZIALEN NETZWERKE";
+    transport.textContent = "TRANSPORTDIENSTE";
+    moyens.textContent = "UNSERE ZAHLUNGSMETHODEN";
+    cop.textContent = "KICK & COP ist Ihre Anlaufstelle für stilvolle, bequeme Schuhe, die für jeden Anlass geeignet sind. Wir wählen sorgfältig hochwertige Modelle aus, die Stil und Haltbarkeit vereinen.";
+    kick.textContent = "ÜBER KICK & COP";
+    mail.textContent = "E-MAIL-ADRESSE:";
+    nous.textContent = "KONTAKTIEREN SIE UNS:";
+});
+
+enClickArabe.addEventListener('click', function () {
+    mentions.textContent = "الإشعارات القانونية | سياسة الخصوصية | الشروط والأحكام";
+    sociaux.textContent = "شبكاتنا الاجتماعية";
+    transport.textContent = "شركات النقل";
+    moyens.textContent = "طرق الدفع لدينا";
+    cop.textContent = "KICK & COP هي وجهتك المثالية للأحذية الأنيقة والمريحة والمناسبة لجميع المناسبات. نختار بعناية نماذج عالية الجودة تجمع بين الأناقة والمتانة.";
+    kick.textContent = "حول KICK & COP";
+    mail.textContent = "عنوان البريد الإلكتروني:";
+    nous.textContent = "اتصل بنا:";
+});
+
+enClickChinois.addEventListener('click', function () {
+    mentions.textContent = "法律声明 | 隐私政策 | 使用条款 | 一般条款和条件";
+    sociaux.textContent = "我们的社交网络";
+    transport.textContent = "运输公司";
+    moyens.textContent = "我们的支付方式";
+    cop.textContent = "KICK & COP 是您寻找时尚、舒适且适合各种场合鞋履的首选目的地。我们精心挑选优质款式，结合了时尚与耐用性。";
+    kick.textContent = "关于 KICK & COP";
+    mail.textContent = "电子邮件地址：";
+    nous.textContent = "联系我们：";
 });

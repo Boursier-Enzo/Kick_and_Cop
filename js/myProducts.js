@@ -44,7 +44,7 @@ const products = [
     productName:
       "Louis Vuitton Nike Air Force 1 Low Monogram Brown Damier Azur",
     description:
-      "La Louis Vuitton Nike Air Force 1 Low Monogram Brown Damier Azur fusionne le style emblématique de Nike avec le luxe de Louis Vuitton, offrant un design raffiné avec des matériaux premium et les motifs Monogram et Damier Azur, pour une sneaker exclusive et sophistiquée.",
+      "La Louis Vuitton Nike Air Force 1 Low Monogram Brown Damier Azur fusionne le style emblématique de Nike avec le luxe de Louis Vuitton.",
     price: 427625,
     imageUrl: "assets/img/image2 (1).png",
     category: "rares",
