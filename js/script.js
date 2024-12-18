@@ -160,23 +160,52 @@ function displayProducts() {
     filteredProducts.forEach((product) => {
       const productCard = document.createElement("div");
       productCard.classList.add("product-card");
+      
+      // Création de la liste déroulante pour les tailles
+      const tailleSelect = document.createElement("select");
+      tailleSelect.id = `taille-${product.productName}`;
+      tailleSelect.name = `taille-${product.productName}`;
+      const tailles = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
+      tailles.forEach((taille) => {
+        const option = document.createElement("option");
+        option.value = taille;
+        option.textContent = taille;
+        tailleSelect.appendChild(option);
+      });
+
+      // Ajout du contenu du produit et de la sélection de taille
       productCard.innerHTML = `
         <img src="${product.imageUrl}" alt="${product.productName}">
         <h3>${product.productName}</h3>
         <p>${product.description}</p>
         <p>${product.price.toFixed(2)} €</p>
-        <button class="add-to-panier">Ajouter au Panier</button>
-        <button class="add-to-favorites">Ajouter à ma liste</button>
       `;
 
-      productCard.querySelector(".add-to-panier").addEventListener("click", () => {
-        addToPanier(product);
+      // Ajout du select pour la taille
+      productCard.appendChild(tailleSelect);
+
+      // Boutons Ajouter au Panier et Ajouter aux favoris
+      const addToPanierBtn = document.createElement('button');
+      addToPanierBtn.classList.add("add-to-panier");
+      addToPanierBtn.textContent = "Ajouter au Panier";
+      addToPanierBtn.addEventListener("click", () => {
+        const selectedTaille = tailleSelect.value;
+        if (selectedTaille) {
+          addToPanier(product, selectedTaille);  // Passer la taille sélectionnée au panier
+        } else {
+          alert("Veuillez sélectionner une taille avant d'ajouter au panier.");
+        }
       });
 
-      productCard.querySelector(".add-to-favorites").addEventListener("click", () => {
+      const addToFavoritesBtn = document.createElement('button');
+      addToFavoritesBtn.classList.add("add-to-favorites");
+      addToFavoritesBtn.textContent = "Ajouter à ma liste";
+      addToFavoritesBtn.addEventListener("click", () => {
         addToFavorites(product);
       });
 
+      productCard.appendChild(addToPanierBtn);
+      productCard.appendChild(addToFavoritesBtn);
       section.appendChild(productCard);
     });
   });
@@ -285,3 +314,4 @@ enClickChinois.addEventListener('click', function () {
     mail.textContent = "电子邮件地址：";
     nous.textContent = "联系我们：";
 });
+

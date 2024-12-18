@@ -542,3 +542,19 @@ footer img {
     width: 20px;
   }
 }
+
+/* Sélecteur de taille */
+.product-card select {
+  background-color: black;
+  color: #c8c374;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: large;
+  text-transform: uppercase;
+  font-family: monospace;
+}
+
+.product-card select:focus {
+  border-color: #3a393b;
+  outline: none;
+}
